@@ -2,7 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 
-import userRouter from "./routes/users.js";
+import userRouter from "./routes/user.js";
+import authRouter from "./routes/auth.js";
 
 dotenv.config();
 
@@ -15,8 +16,9 @@ const client = mongoose
   .then(() => console.log("db connection successfully"))
   .catch((err) => console.log(err));
 
-express.json();
+app.use(express.json());
 app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
