@@ -8,18 +8,8 @@ import User from "./../models/User.js";
 
 const router = express.Router();
 
-// router.put("/:id", async (req, res) => {
-//   try {
-//     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-//       new: true,
-//     });
 
-//     res.status(200).json(updatedUser);
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// });
-
+//admin only can listing all users
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
     const { new: newQ } = req.query;
@@ -40,6 +30,7 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
+// admin or user can get user
 router.get("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     let user = await User.findOne(
@@ -48,6 +39,17 @@ router.get("/:id", verifyTokenAndAuthorization, async (req, res) => {
     );
 
     res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// admin only can be delete user
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    await User.findByIdAndDelete({ _id: req.params.id });
+
+    res.status(201).json("deleted!");
   } catch (error) {
     res.status(500).json(error);
   }
