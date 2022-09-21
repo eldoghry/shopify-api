@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json("wrong credinals");
 
     const ACCESS_TOKEN = jwt.sign(
-      { id: user.id, isAdmin: user.isAdmin },
+      { userId: user.id, isAdmin: user.isAdmin },
       JWT_SECRET_KEY,
       {
         expiresIn: "2d",
