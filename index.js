@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 
 import userRouter from "./routes/user.js";
 import authRouter from "./routes/auth.js";
+import productRouter from "./routes/product.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ const client = mongoose
 app.use(express.json());
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/product", productRouter);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
