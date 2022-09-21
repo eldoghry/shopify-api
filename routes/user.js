@@ -1,5 +1,9 @@
 import express from "express";
-import { verifyToken } from "../middlewares/verifyToken.js";
+import {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+} from "../middlewares/verifyToken.js";
 import User from "./../models/User.js";
 
 const router = express.Router();
@@ -16,15 +20,34 @@ const router = express.Router();
 //   }
 // });
 
-/**
- * Get all users
- *
- */
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const users = await User.find();
+    const { new: newQ } = req.query;
+
+    let users;
+
+    if (newQ) {
+      users = await User.find({}, { password: 0, __v: 0 })
+        .sort({ createdAt: -1 })
+        .limit(2);
+    } else {
+      users = await User.find({}, { password: 0, __v: 0 });
+    }
 
     res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.get("/:id", verifyTokenAndAuthorization, async (req, res) => {
+  try {
+    let user = await User.findOne(
+      { _id: req.params.id },
+      { password: 0, __v: 0 }
+    );
+
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json(error);
   }
