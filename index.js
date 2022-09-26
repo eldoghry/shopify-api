@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
+import cors from "cors";
 
 import userRouter from "./routes/user.js";
 import authRouter from "./routes/auth.js";
@@ -20,6 +21,7 @@ const client = mongoose
   .catch((err) => console.log(err));
 
 app.use(express.json());
+app.use(cors());
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
