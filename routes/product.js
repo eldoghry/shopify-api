@@ -8,6 +8,17 @@ import Product from "./../models/Product.js";
 
 const router = express.Router();
 
+// admin only can be create product
+router.post("/", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 //everyone can listing products
 router.get("/", async (req, res) => {
   try {
@@ -68,17 +79,6 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
     );
 
     res.status(200).json(updated);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-// admin only can be create product
-router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  try {
-    const product = await Product.create(req.body);
-
-    res.status(201).json(product);
   } catch (error) {
     res.status(500).json(error);
   }
