@@ -24,6 +24,12 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+
+    status: {
+      type: Boolean,
+      required: true,
+      default: true, //1 active, 0 inactive
+    },
   },
   {
     timestamps: true,

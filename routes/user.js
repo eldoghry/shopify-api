@@ -12,15 +12,25 @@ const router = express.Router();
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
     const { new: newQ } = req.query;
+    const { admin } = req.query;
+    const { all } = req.query;
 
     let users;
 
     if (newQ) {
-      users = await User.find({}, { password: 0, __v: 0 })
+      //return new customers
+      users = await User.find({ isAdmin: false }, { password: 0, __v: 0 })
         .sort({ createdAt: -1 })
         .limit(5);
-    } else {
+    } else if (admin) {
+      //return all admins only
+      users = await User.find({ isAdmin: true }, { password: 0, __v: 0 });
+    } else if (all) {
+      //return all users (customers and admins)
       users = await User.find({}, { password: 0, __v: 0 });
+    } else {
+      //return all customers only
+      users = await User.find({ isAdmin: false }, { password: 0, __v: 0 });
     }
 
     res.status(200).json(users);
