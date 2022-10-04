@@ -2,6 +2,7 @@ import express from "express";
 import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
@@ -53,5 +54,14 @@ router.post("/login", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+//verify token
+// router.get("/validateToken", verifyToken, async (req, res) => {
+//   try {
+//     res.status(202);
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
 
 export default router;

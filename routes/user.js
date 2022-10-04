@@ -64,4 +64,15 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
+// Authorized user can be create user
+router.post("/", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const user = await User.create({ ...req.body });
+
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 export default router;
