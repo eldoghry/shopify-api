@@ -22,6 +22,18 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
 
+    inStock: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+
+    status: {
+      type: String,
+      required: true,
+      default: "active",
+    },
+
     sizes: {
       type: [],
     },
